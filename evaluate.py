@@ -62,40 +62,66 @@ def get_deepest_leaf_nodes(lf_nds):
 
 
 def determine_next_step(lf_nds):
-    print(f"=== {lf_nds} ===")
+    """
+    Function to determine the next step to execute from a list of leaf nodes.
+
+    :param lf_nds: list of leaf nodes expected to come from collect_leaf_nodes.
+    :return step_root_node: root node of the next step to be performed
+    """
+    logger.debug(f"lf_nds = {lf_nds}")
+    dp_lf_nds = get_deepest_leaf_nodes(lf_nds)
+    logger.debug(f"dp_lf_nds = {dp_lf_nds}")
     still_looking = True
+    step_root_node = None
     index = 0
     siblings_found = 0
 
     while still_looking:
-        logger.debug(f"index: {index}")
-        current_leaf = lf_nds[index]
-        logger.debug(f"current_leaf: {current_leaf}")
+        current_leaf = dp_lf_nds[index]
         siblings = current_leaf.get_parent().get_children()
+        logger.debug(f"index: {index}")
+        logger.debug(f"current_leaf: {current_leaf}")
         logger.debug(f"siblings: {siblings}")
         for sibling in siblings:
-            for lf in lf_nds:
+            for lf in dp_lf_nds:
                 if id(sibling) == id(lf):  # TODO: use UUID instead of mem address id()
                     siblings_found += 1
                     logger.debug(f"sibling found, siblings_found = {siblings_found}")
                     if siblings_found == len(siblings):
-                        next_step_root_node = current_leaf.get_parent()
-                        logger.debug(f"next_step_root_node: {next_step_root_node}, "
-                                     f"with children: {next_step_root_node.get_children()}")
+                        step_root_node = current_leaf.get_parent()
+                        logger.debug(f"next_step_root_node: {step_root_node}, "
+                                     f"with children: {step_root_node.get_children()}")
                         still_looking = False
         index += 1
-        return next_step_root_node
+    return step_root_node
 
 
-expr = "1 + 2 + 3"
-expr_tree = main.build_tree(expr)
-leaf_nodes = collect_leaf_nodes(expr_tree)
-next_step = determine_next_step(get_deepest_leaf_nodes(leaf_nodes))
-print(f"The next step is '{next_step}' with children '{next_step.get_children()}'")
+def evaluate_step(node):
+    operation = node.get_cargo()
+    operands = tuple(child.get_cargo() for child in node.get_children())
+    step_result = operation.execute(operands)
+    return step_result
 
-operation = next_step.get_cargo()
-print(f"operation: {operation} of type: {type(operation)}")
-operands = tuple(child.get_cargo() for child in next_step.get_children())
-print(f"operands: {operands} of types: {[type(operand) for operand in operands]}")
-step_result = operation.execute(operands)
-print(f"step_result: {step_result}")
+
+def evaluate_expression(expression):
+    """
+    Function to manage the evaluation of the entire expression.
+
+    :param str expression: the actual, original expression problem
+    :return dict: dictionary of steps
+    """
+    expr_tree = main.build_tree(expression)
+    finished = False
+
+    while not finished:
+        leaf_nodes = collect_leaf_nodes(expr_tree)
+        step = determine_next_step(leaf_nodes)
+        print(f"The next step is '{step}' with children '{step.get_children()}'")
+        step_result = evaluate_step(step)
+        print(f"evaluate_next_step returns {step_result}")
+        finished = True
+    return None
+
+
+expr = "1 + 2 * 3"
+evaluate_expression(expr)

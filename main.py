@@ -1,3 +1,5 @@
+"""Functions responsible for building and traversing the tree."""
+
 import definitions as defn
 import logging.config
 import logging_config.config as lc
@@ -75,3 +77,4 @@ def insert_spaces(expr):
     temp.pop()
     expr = "".join(temp)
     return expr
+

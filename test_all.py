@@ -1,3 +1,5 @@
+"""Functions responsible for testing everything."""
+
 import logging.config
 import logging_config.config as lc
 import random

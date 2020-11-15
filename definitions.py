@@ -1,9 +1,11 @@
-"""Operands & Operations defined here."""
+"""Class definitions for operations and operands."""
+
 import logging.config
 import logging_config.config as lc
 import main
 import tree
 import math
+import re
 
 
 # Logging
@@ -368,7 +370,22 @@ class Multiply:
         return str(self.latex)
 
     def execute(self, operands):
+        """
+        Function to perform multiplication operation on operands.
 
+        :param tuple operands: operands to be multiplied in the form (<op_1>, <op_2>, ..., <op_n>)
+        :return: result
+        """
+
+        """
+        This execute function is responsible for determining the output of the multiply operation on whatever operands
+        are passed to it.
+            - if there can be no operation performed (eg. "2 * x"), return "no change" and evaluate_expression function
+                picks up from there because it's keeping a pointer on the root node of that subtree (in this case, *) 
+                and collect_leaf_nodes will treat that node as a leaf node on the next traversal 
+            - if there can be an operation performed, (eg. "2 * 3"), return the result as a value of the correct type of 
+                the result (in this case, Integer(6))
+        """
         numbers = []
         variables = []
 
@@ -382,11 +399,26 @@ class Multiply:
         combined_variables = " * ".join([variable.get_value() for variable in variables])
 
         if combined_variables:
-            result = combined_variables + "*" + combined_numbers
+            raw_result = combined_variables + "*" + combined_numbers
         else:
-            result = combined_numbers
-        logger.debug(f"execute returning: {result}")
-        return result
+            raw_result = combined_numbers
+
+        print(f"raw_result: {raw_result} of type {type(raw_result)}")
+
+        # TODO: write a function to create the proper type of result object based on what result is. This function
+        # TODO: needs to be callable from all 'execute' functions.
+
+        # convert raw_result to a usable type
+        regex_to_class_dict = {
+            r"^[0-9]+$": Integer,
+            r"^[0-9]+\.[0-9]+$": Decimal,
+        }
+        typed_result = None
+        for pattern in regex_to_class_dict:
+            if re.search(pattern, raw_result):
+                typed_result = regex_to_class_dict[pattern](raw_result)
+        logger.debug(f"typed_result: {typed_result} of type {type(typed_result)}")
+        return typed_result
 
     def grow(self, q_stack):
         current_node = q_stack.peek()

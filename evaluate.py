@@ -1,6 +1,12 @@
+"""Functions responsible for going about th business of solving one of these damned expressions."""
+
 import logging.config
 import logging_config.config as lc
 import main
+import definitions as defn
+import exceptions
+import re
+
 
 # Logging
 logging.config.dictConfig(lc.config_dict)
@@ -122,6 +128,30 @@ def evaluate_expression(expression):
         finished = True
     return None
 
+
+def convert_to_custom_object(raw_input):
+    """
+    Convert a standard python object (eg. str, int, float) to the appropriate corresponding custom object type
+    compatible with this applications tree (eg. Integer, Decimal, Fraction).
+
+    :param raw_input: standard python data type
+    :return: appropriate data type defined in definitions.py
+    """
+    regex_to_class_dict = {
+        r"^[0-9]+$": defn.Integer,
+        r"^[0-9]+\.[0-9]+$": defn.Decimal,
+    }
+    converted_input = None
+    for pattern in regex_to_class_dict:
+        if re.search(pattern, str(raw_input)):
+            converted_input = regex_to_class_dict[pattern](raw_input)
+    if converted_input is None:
+        raise exceptions.FailedToConvertError(raw_input, regex_to_class_dict[pattern])
+    logger.debug(f"converted_input: {converted_input} of type {type(converted_input)}")
+    return converted_input
+
+
+print(convert_to_custom_object(6))
 
 expr = "1 + 2 * 3"
 evaluate_expression(expr)

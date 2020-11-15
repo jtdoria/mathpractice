@@ -1,4 +1,5 @@
-"""Node and Stack classes are defined here."""
+"""Class definitions for the tree node and stack."""
+
 import logging.config
 import logging_config.config as lc
 

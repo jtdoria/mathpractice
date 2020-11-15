@@ -403,7 +403,7 @@ class Multiply:
         else:
             raw_result = combined_numbers
 
-        print(f"raw_result: {raw_result} of type {type(raw_result)}")
+        logger.debug(f"raw_result: {raw_result} of type {type(raw_result)}")
 
         # TODO: write a function to create the proper type of result object based on what result is. This function
         # TODO: needs to be callable from all 'execute' functions.

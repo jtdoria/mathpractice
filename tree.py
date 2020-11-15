@@ -57,8 +57,12 @@ class Node:
         return [i for i in self.children]
 
     def remove_child(self, index=-1):
-        """Remove all of the node's children."""
+        """Remove one of the node's children."""
         self.children.pop(index)
+
+    def clear_all_children(self):
+        """Remove all of the node's children"""
+        self.children = []
 
     def go_to(self, destination_node):
         pass

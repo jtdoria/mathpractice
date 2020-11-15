@@ -13,8 +13,7 @@ logging.config.dictConfig(lc.config_dict)
 logger = logging.getLogger('my_logger')
 
 
-# TODO: Am I not supposed to have a default argument be mutable?
-def collect_leaf_nodes(node, lf_nds=[], level=0):
+def collect_leaf_nodes(node, lf_nds=None, level=0):
     """
     Arguments:
         node: (tree.Node object) to provide starting node from which to begin evaluation.
@@ -24,10 +23,13 @@ def collect_leaf_nodes(node, lf_nds=[], level=0):
         leaf_nodes: (list of tuples) list containing tuples of all leaf nodes and their respective depth level in the
         form (node, level).
     """
+    if lf_nds is None:
+        lf_nds = []
+
     if node.get_children():
         num_of_children = len(node.get_children())
         for i in range(num_of_children):
-            collect_leaf_nodes(node=node.get_child(i), level=level + 1)
+            collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level + 1)
             logger.debug(f"leaf_nodes so far: {lf_nds}")
             # TODO: Subtraction handling.
             # if (i != num_of_children - 1) and isinstance(node.get_child(i + 1).get_cargo(), defn.Subtract):
@@ -95,10 +97,9 @@ def determine_next_step(lf_nds):
                     logger.debug(f"sibling found, siblings_found = {siblings_found}")
                     if siblings_found == len(siblings):
                         step_root_node = current_leaf.get_parent()
-                        logger.debug(f"next_step_root_node: {step_root_node}, "
-                                     f"with children: {step_root_node.get_children()}")
                         still_looking = False
         index += 1
+    logger.debug(f"step_root_node: {step_root_node} with children: {step_root_node.get_children()}")
     return step_root_node
 
 
@@ -109,24 +110,53 @@ def evaluate_step(node):
     return step_result
 
 
-def evaluate_expression(expression):
+def evaluate_expression(root_node):
     """
-    Function to manage the evaluation of the entire expression.
+    Function to manage the evaluation of the entire expression tree.
 
-    :param str expression: the actual, original expression problem
-    :return dict: dictionary of steps
+    :param root_node: root node of expression tree (or subtree as function recurses)
+    :return:
     """
-    expr_tree = main.build_tree(expression)
-    finished = False
+    logger.debug(f"evaluate_expression START ========================================")
+    # recursive function's terminating condition; include pointer here for "4 * x" scenario, for example
+    if root_node.get_children():
 
-    while not finished:
-        leaf_nodes = collect_leaf_nodes(expr_tree)
-        step = determine_next_step(leaf_nodes)
-        print(f"The next step is '{step}' with children '{step.get_children()}'")
-        step_result = evaluate_step(step)
-        print(f"evaluate_next_step returns {step_result}")
-        finished = True
-    return None
+        # Step 0: Raw expression string (happens outside this function)
+        # Step 1: Build tree (happens outside this function)
+
+        # Step 2: Collect leaf nodes
+        leaf_nodes = collect_leaf_nodes(root_node)
+
+        # Step 3 & 4: Determine next step
+        step_node = determine_next_step(leaf_nodes)
+        logger.debug(f"The next step is '{step_node}' with children '{step_node.get_children()}'")
+
+        # Step 5: Evaluate the step
+        step_result = evaluate_step(step_node)
+        logger.debug(f"evaluate_next_step returns {step_result}")
+
+        # Step 6: Update the tree
+        focus_node = step_node
+        logger.debug(f"focus_node is {focus_node}")
+        focus_node.set_cargo(step_result)
+        focus_node.clear_all_children()
+        logger.debug(f"focus_node is now {focus_node} with children {focus_node.get_children()}")
+
+        logger.debug(f"root_node is {root_node} with children {root_node.get_children()}")
+        logger.debug(f"evaluate_expression END ==========================================")
+
+        # Recurse
+        evaluate_expression(root_node)
+
+    else:
+        return root_node
+
+    return root_node
+
+
+expr_1 = "1 * 2 + 3 + 4 * 5 * 2"
+expr_tree_1 = main.build_tree(expr_1)
+print(evaluate_expression(expr_tree_1))
 
 
 def convert_to_custom_object(raw_input):
@@ -150,8 +180,3 @@ def convert_to_custom_object(raw_input):
     logger.debug(f"converted_input: {converted_input} of type {type(converted_input)}")
     return converted_input
 
-
-print(convert_to_custom_object(6))
-
-expr = "1 + 2 * 3"
-evaluate_expression(expr)

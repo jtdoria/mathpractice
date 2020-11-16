@@ -7,7 +7,6 @@ import definitions as defn
 import exceptions
 import re
 
-
 # Logging
 logging.config.dictConfig(lc.config_dict)
 logger = logging.getLogger('my_logger')
@@ -154,11 +153,6 @@ def evaluate_expression(root_node):
     return root_node
 
 
-expr_1 = "1 * 2 + 3 + 4 * 5 * 2"
-expr_tree_1 = main.build_tree(expr_1)
-print(evaluate_expression(expr_tree_1))
-
-
 def convert_to_custom_object(raw_input):
     """
     Convert a standard python object (eg. str, int, float) to the appropriate corresponding custom object type
@@ -179,4 +173,3 @@ def convert_to_custom_object(raw_input):
         raise exceptions.FailedToConvertError(raw_input, regex_to_class_dict[pattern])
     logger.debug(f"converted_input: {converted_input} of type {type(converted_input)}")
     return converted_input
-

@@ -591,6 +591,7 @@ class Divide:
             logger.debug(f"-------------")
 
         elif isinstance(current_node.get_cargo(), Multiply):
+            # exact same as below
             new_node = tree.Node(self)
             if current_node.get_parent() is not None:
                 current_node.get_parent().remove_child()
@@ -612,8 +613,17 @@ class Divide:
             logger.debug(f"-------------")
 
         elif isinstance(current_node.get_cargo(), Divide):
-            # set current node cargo to i, add a child, and go to it
-            current_node.set_cargo(self)
+            # exact same as above
+            new_node = tree.Node(self)
+            if current_node.get_parent() is not None:
+                current_node.get_parent().remove_child()
+                current_node.get_parent().insert_child(new_node)
+            current_node.set_parent(new_node)
+            new_node.insert_child(current_node)
+            new_node.remove_child(index=-1)
+            current_node = new_node
+            q_stack.pop()
+            q_stack.push(current_node)
             current_node.insert_child(tree.Node())
             current_node = current_node.get_child(index=-1)
             q_stack.push(current_node)

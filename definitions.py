@@ -519,6 +519,23 @@ class Divide:
     def __str__(self):
         return str(self.latex)
 
+    def execute(self, operands):
+        """
+        Function to perform division operation. Only capable of returning decimals in the form of standard
+        floats currently.
+        Parameters
+            operands (tuple): operands in the form (dividend, divisor).
+        Return
+            res (float): the quotient resulting from dividing the dividend by the divisor.
+        """
+        dividend = operands[0].get_value()
+        divisor = operands[1].get_value()
+        quotient = dividend / divisor
+        logger.debug(f"quotient: {quotient}, type:{type(quotient)}")
+
+        res = Decimal(quotient)
+        return res
+
     def grow(self, q_stack):
         current_node = q_stack.peek()
 

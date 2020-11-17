@@ -25,16 +25,16 @@ def collect_leaf_nodes(node, lf_nds=None, level=0):
     if lf_nds is None:
         lf_nds = []
 
+    # Does node have children?
     if node.get_children():
         num_of_children = len(node.get_children())
         for i in range(num_of_children):
-            collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level + 1)
+            # Is node's cargo Subtract?
+            if isinstance(node.get_cargo(), defn.Subtract):
+                collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level)
+            else:
+                collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level + 1)
             logger.debug(f"leaf_nodes so far: {lf_nds}")
-            # TODO: Subtraction handling.
-            # if (i != num_of_children - 1) and isinstance(node.get_child(i + 1).get_cargo(), defn.Subtract):
-            #     result += "-"
-            # if (i != num_of_children - 1) and not isinstance(node.get_child(i + 1).get_cargo(), defn.Subtract):
-            #     result += str(node.get_cargo())
     else:
         logger.debug(f"appending: '{node, level}'")
         lf_nds.append((node, level))
@@ -86,16 +86,22 @@ def determine_next_step(lf_nds):
     while still_looking:
         current_leaf = dp_lf_nds[index]
         siblings = current_leaf.get_parent().get_children()
+        logger.debug(f"siblings are: {siblings}")
+        # Assuming each Subtract node has only one child, we'll just use that child for this comparison
+        for i in range(len(siblings)):
+            if isinstance(siblings[i].get_cargo(), defn.Subtract):
+                siblings[i] = siblings[i].get_child()
+                logger.debug(f"sibling changed to: {siblings[i]}")
         logger.debug(f"index: {index}")
         logger.debug(f"current_leaf: {current_leaf}")
         logger.debug(f"siblings: {siblings}")
         for sibling in siblings:
             for lf in dp_lf_nds:
-                if id(sibling) == id(lf):  # TODO: use UUID instead of mem address id()
+                if id(sibling) == id(lf):
                     siblings_found += 1
                     logger.debug(f"sibling found, siblings_found = {siblings_found}")
                     if siblings_found == len(siblings):
-                        step_root_node = current_leaf.get_parent()
+                        step_root_node = siblings[0].get_parent()
                         still_looking = False
         index += 1
     logger.debug(f"step_root_node: {step_root_node} with children: {step_root_node.get_children()}")
@@ -104,8 +110,27 @@ def determine_next_step(lf_nds):
 
 def evaluate_step(node):
     operation = node.get_cargo()
-    operands = tuple(child.get_cargo() for child in node.get_children())
+    logger.debug(f"operation: {operation}")
+    operands = []
+
+    for i in range(len(node.get_children())):
+
+        # If the child of operation is not Subtract, append the operand to the operands list
+        if not isinstance(node.get_children()[i].get_cargo(), defn.Subtract):
+            operands.append(node.get_children()[i].get_cargo())
+
+        # If the child of operation is Subtract, multiply its child's cargo value by -1 and append that to the operands
+        # list
+        if isinstance(node.get_children()[i].get_cargo(), defn.Subtract):
+            correct_operand = node.get_children()[i].get_child().get_cargo()
+            correct_operand = defn.Integer(correct_operand.get_value() * -1)
+            operands.append(correct_operand)
+
+    logger.debug(f"operands: {operands} of type {type(operands)} with operands[0] {operands[0]} of type {type(operands[0])}")
+
+    operands = tuple(operands)
     step_result = operation.execute(operands)
+    logger.debug(f"step_result: {step_result} of type {type(step_result)}")
     return step_result
 
 

@@ -126,25 +126,25 @@ class Add:
         return str(self.latex)
 
     def execute(self, operands):
+        """
+        Function to perform addition and subtraction operations on operands. Because of the way the tree is designed to
+        construct subtraction (eg. "1 - 2" builds "1 + - 2"), an operand node may actually contain Subtract. To account
+        for this, we iterate over the operands and replace their position in the list with their child node if indeed
+        they do contain Subtract, multiplying it's cargo by -1. After that, the sum of all the operands is found. If no
+        Subtract is found, the sum of all the operands is found.
 
-        numbers = []
-        variables = []
+        Parameters
+            :param tuple operands: operands to be multiplied in the form (op_1, op_2, ..., op_n).
+        Return
+            :return: result; the sum or difference.
+        """
+        logger.debug(f"operands: {operands} of type {type(operands)}")
+        logger.debug(f"operand: {operands[1]} of type {type(operands[1])}")
 
-        for operand in operands:
-            if isinstance(operand, Variable):
-                variables.append(operand)
-            else:
-                numbers.append(operand)
+        res = sum([operand.get_value() for operand in operands])
 
-        combined_numbers = str(sum([number.get_value() for number in numbers]))
-        combined_variables = " + ".join([variable.get_value() for variable in variables])
-
-        if combined_variables:
-            result = combined_variables + "+" + combined_numbers
-        else:
-            result = combined_numbers
-        logger.debug(f"execute returning: {result}")
-        return result
+        logger.debug(f"execute returning: {res}")
+        return res
 
     def grow(self, q_stack):
         current_node = q_stack.peek()
@@ -220,6 +220,9 @@ class Subtract:
 
     def __str__(self):
         return str(self.latex)
+
+    def execute(self):
+        pass
 
     def grow(self, q_stack):
         current_node = q_stack.peek()

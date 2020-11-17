@@ -13,6 +13,14 @@ logger = logging.getLogger('my_logger')
 
 
 def build_tree(expr):
+    """
+    Function to create a tree based on an expression.
+
+    Parameters
+        :param string expr: latex string of expression.
+    Return
+        :return tree.Node root_node: tree root node.
+    """
     logger.info(f"Called build_tree.")
 
     # Initialize the tree and stack.
@@ -56,6 +64,14 @@ def build_tree(expr):
 
 
 def traverse(node):
+    """
+    Function to translate tree back into it's original latex string. Essentially, build_tree's inverse function.
+
+    Parameters
+        :param tree.Node node: tree root node.
+    Return
+        :return string result: latex string of expression which produced string.
+    """
     result = ""
     if node.get_children():
         num_of_children = len(node.get_children())
@@ -71,6 +87,14 @@ def traverse(node):
 
 
 def insert_spaces(expr):
+    """
+    Function to insert spaces into the output of the traverse function for proper formatting.
+
+    Parameters
+        :param expr: latex string (without spaces) of expression from traverse function
+    Return
+        :return string expr: properly formatted latex string.
+    """
     temp = list(expr)
     for i in range(len(expr)):
         temp.insert(2 * i + 1, " ")

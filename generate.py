@@ -19,14 +19,7 @@ def gen_arithmetic(operation, diff):
 
 
 def gen_order_of_operations(diff):
-    """Function to generate expressions of various length with the arithmetic operations of addition, subtraction,
-    multiplication, and division.
-
-    Parameters
-        diff int: difficulty level 0, 1, or 2.
-    Return
-        expr string: expression string with latex formatting
-    """
+    """ARITHMETIC - ORDER OF OPERATIONS - BASIC OPERATIONS"""
     latex_bank = {
         'operations': (
             '+',
@@ -45,6 +38,42 @@ def gen_order_of_operations(diff):
     expression_list = operands[:]
     for i in range(num_of_operations):
         expression_list.insert(2 * i + 1, operations[i])
+
+    expression_string = ' '.join(expression_list)
+    return expression_string
+
+
+def gen_arithmetic_order_of_operations_include_parentheses(diff):
+    """ARITHMETIC - ORDER OF OPERATIONS - INCLUDE PARENTHESES"""
+    latex_bank = {
+        'operations': (
+            '+',
+            '-',
+            '*',
+            '/',
+        ),
+    }
+
+    num_of_operations = 3 + diff
+    num_of_operands = num_of_operations + 1
+
+    operations = [operation for operation in random.choices(latex_bank['operations'], k=num_of_operations)]
+    operands = [str(random.randint(0, 10)) for _ in range(num_of_operands)]
+
+    expression_list = operands[:]
+    for i in range(num_of_operations):
+        expression_list.insert(2 * i + 1, operations[i])
+
+    # INSERT PARENTHESES
+    print(expression_list)
+
+    open_pos = 2 * random.randint(0, int((len(expression_list) - 1) / 2))
+    print(f"open_pos:  {open_pos}")
+    expression_list.insert(open_pos, '(')
+
+    close_pos = open_pos + 2 * random.randint(1, int((len(expression_list) - open_pos) / 2))
+    print(f"close_pos: {close_pos}")
+    expression_list.insert(close_pos, ')')
 
     expression_string = ' '.join(expression_list)
     return expression_string

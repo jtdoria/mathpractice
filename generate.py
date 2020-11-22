@@ -108,3 +108,91 @@ def gen_arithmetic_order_of_operations_include_parentheses(diff):
 
     expression_string = ' '.join(expression_list)
     return expression_string
+
+
+"""ARITHMETIC - FRACTIONS"""
+
+
+def gen_arithmetic_fractions_add_with_common_denominators(diff):
+    """ARITHMETIC - FRACTIONS - ADD WITH COMMON DENOMINATORS"""
+    operation = "+"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom}}} {operation} \\frac{{{numer_2}}}{{{denom}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_subtract_with_common_denominators(diff):
+    """ARITHMETIC - FRACTIONS - SUBTRACT WITH COMMON DENOMINATORS"""
+    operation = "-"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom}}} {operation} \\frac{{{numer_2}}}{{{denom}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_add_with_uncommon_denominators(diff):
+    """ARITHMETIC - FRACTIONS - ADD WITH UNCOMMON DENOMINATORS"""
+    operation = "+"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom_1 = random.randint(0, upper_bound)
+    denom_2 = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom_1}}} {operation} \\frac{{{numer_2}}}{{{denom_2}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_subtract_with_uncommon_denominators(diff):
+    """ARITHMETIC - FRACTIONS - SUBTRACT WITH UNCOMMON DENOMINATORS"""
+    operation = "-"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom_1 = random.randint(0, upper_bound)
+    denom_2 = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom_1}}} {operation} \\frac{{{numer_2}}}{{{denom_2}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_multiply(diff):
+    """ARITHMETIC - FRACTIONS - MULTIPLY"""
+    operation = "*"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom_1 = random.randint(0, upper_bound)
+    denom_2 = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom_1}}} {operation} \\frac{{{numer_2}}}{{{denom_2}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_divide(diff):
+    """ARITHMETIC - FRACTIONS - DIVIDE"""
+    operation = "/"
+    upper_bound = 10 ** (diff + 1)
+    numer_1 = random.randint(0, upper_bound)
+    numer_2 = random.randint(0, upper_bound)
+    denom_1 = random.randint(0, upper_bound)
+    denom_2 = random.randint(0, upper_bound)
+    expr = f"\\frac{{{numer_1}}}{{{denom_1}}} {operation} \\frac{{{numer_2}}}{{{denom_2}}}"
+    return expr
+
+
+def gen_arithmetic_fractions_simplify(diff):
+    """ARITHMETIC - FRACTIONS - SIMPLIFY"""
+
+    upper_bound = 10 ** (diff + 1)
+    common_divisor = random.randint(1, 10)
+    numer = random.randint(1, upper_bound)
+    denom = random.randint(1, upper_bound)
+
+    numer = numer * common_divisor
+    denom = denom * common_divisor
+
+    expr = f"\\frac{{{numer}}}{{{denom}}}"
+    return expr

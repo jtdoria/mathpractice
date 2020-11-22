@@ -43,6 +43,37 @@ def gen_order_of_operations(diff):
     return expression_string
 
 
+def gen_arithmetic_order_of_operations_include_exponents(diff):
+    """ARITHMETIC - ORDER OF OPERATIONS - INCLUDE EXPONENTS"""
+    latex_bank = {
+        'operations': (
+            '+',
+            '-',
+            '*',
+            '/',
+        ),
+    }
+
+    num_of_operations = 3 + diff
+    num_of_operands = num_of_operations + 1
+
+    operations = [operation for operation in random.choices(latex_bank['operations'], k=num_of_operations)]
+    operands = [str(random.randint(0, 10)) for _ in range(num_of_operands)]
+
+    # INSERT EXPONENT
+    r_index = random.randint(0, (len(operands) - 1))
+    target = operands[r_index] + "^{2}"
+    operands[r_index] = target
+
+    expression_list = operands[:]
+    for i in range(num_of_operations):
+        expression_list.insert(2 * i + 1, operations[i])
+
+    expression_string = ' '.join(expression_list)
+    print(expression_list)
+    return expression_string
+
+
 def gen_arithmetic_order_of_operations_include_parentheses(diff):
     """ARITHMETIC - ORDER OF OPERATIONS - INCLUDE PARENTHESES"""
     latex_bank = {

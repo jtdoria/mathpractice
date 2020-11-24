@@ -196,3 +196,89 @@ def gen_arithmetic_fractions_simplify(diff):
 
     expr = f"\\frac{{{numer}}}{{{denom}}}"
     return expr
+
+
+"""NUMBER THEORY"""
+
+
+def number_theory_integers_divisibility_test(diff):
+    """NUMBER THEORY - INTEGERS - DIVISIBILITY TEST"""
+    """Ways to ask the question:
+    1 - Is a divisible by b?"""
+    upper_bound = 10 ** (diff + 2)
+    dividend = random.randint(20, upper_bound)
+    divisor = random.randint(1, 10)
+    word_expr = f"Is {dividend} divisible by {divisor}?"
+    return word_expr
+
+
+def number_theory_integers_primality_test(diff):
+    """NUMBER THEORY - INTEGERS - PRIMALITY TEST"""
+    """Ways to ask the question:
+    1 - Is x a prime number?
+    2 - Are 1 and x the only positive numbers that x can be divided by?
+    3 - 1 and x are the only positive numbers that divide x. True or False?
+    4 - x is one of the prime numbers. True or False?"""
+    upper_bound = 10 ** (diff + 1)
+    candidate = random.randint(1, upper_bound)
+    word_expr = f"Is {candidate} a prime number?"
+    return word_expr
+
+
+def number_theory_integers_prime_factorization(diff):
+    """NUMBER THEORY - INTEGERS - PRIME FACTORIZATION"""
+    """Ways to ask the question:
+    1 - Factor x into its prime factors."""
+    upper_bound = 10 ** (diff + 1)
+    candidate = random.randint(4, upper_bound)
+    word_expr = f"Factor {candidate} into its prime factors."
+    return word_expr
+
+
+def number_theory_integers_divisors(diff):
+    """NUMBER THEORY - INTEGERS - DIVISORS"""
+    """Ways to ask the question:
+    1 - List all divisors of x.
+    eg x = 16, => [1, 2, 3, 4, 8, 16]"""
+    upper_bound = 10 ** (diff + 1)
+    candidate = random.randint(1, upper_bound)
+    word_expr = f"List all divisors of {candidate}."
+    return word_expr
+
+
+def number_theory_integers_greatest_common_divisor(diff):
+    """NUMBER THEORY - INTEGERS - GREATEST COMMON DIVISOR"""
+    """Ways to ask the question:
+    1 - Find the greatest common divisor of a and b."""
+    upper_bound = 10 ** (diff + 1)
+    a = random.randint(1, upper_bound)
+    b = random.randint(1, upper_bound)
+    word_expr = f"Find the greatest common divisor of {a} and {b}."
+    return word_expr
+
+
+def number_theory_integers_least_common_multiple(diff):
+    """NUMBER THEORY - INTEGERS - LEAST COMMON MULTIPLE"""
+    """Ways to ask the question:
+        1 - Find the least common multiple of a and b."""
+    upper_bound = 10 ** (diff + 1)
+    a = random.randint(1, upper_bound)
+    b = random.randint(1, upper_bound)
+    word_expr = f"Find the least common multiple of {a} and {b}."
+    return word_expr
+
+
+def number_theory_integers_relatively_prime_test(diff):
+    """NUMBER THEORY - INTEGERS - RELATIVELY PRIME TEST"""
+    """Ways to ask the question:
+    1 - Is 1 the only positive number that divides both a and b?
+    2 - Are a and b relatively prime?
+    3 - Is a coprime with b?
+    4 - Are a and b mutually prime?
+    The solution is to find all prime factors of a and b and 
+    return True if they don't share any (except the number 1)"""
+    upper_bound = 10 ** (diff + 2)
+    a = random.randint(1, upper_bound)
+    b = random.randint(1, upper_bound)
+    word_expr = f"Is 1 the only positive number that divides both {a} and {b}?"
+    return word_expr

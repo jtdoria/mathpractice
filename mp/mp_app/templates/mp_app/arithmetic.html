@@ -1,0 +1,80 @@
+
+{% extends "mp_app/base.html" %}
+
+
+
+{% block content %}
+
+<!-- ---------------------------------------- JUMBOTRON ---------------------------------------- -->
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to arithmetic!</h1>
+  <p class="lead">Practice auto-generated math problems with step-by-step solutions that are easy to understand.</p>
+</div>
+
+<h3>Integers</h3>
+<ol>
+  <li>
+    <a href="#">Add</a>
+  </li>
+    <li>
+    <a href="#">Subtract</a>
+  </li>
+    <li>
+    <a href="#">Multiply</a>
+  </li>
+    <li>
+    <a href="#">Divide</a>
+  </li>
+</ol>
+
+<h3>Order of Operations</h3>
+<ol>
+  <li>
+    <a href="#">Basic Operations</a>
+  </li>
+    <li>
+    <a href="#">Include Exponents</a>
+  </li>
+    <li>
+    <a href="#">Include Parentheses</a>
+  </li>
+</ol>
+
+<h3>Fractions</h3>
+<ol>
+  <li>
+    <a href="#">Add with common denominators</a>
+  </li>
+    <li>
+    <a href="#">Subtract with common denominators</a>
+  </li>
+    <li>
+    <a href="#">Add with uncommon denominators</a>
+  </li>
+    <li>
+    <a href="#">Subtract with uncommon denominators</a>
+  </li>
+    <li>
+    <a href="#">Multiply</a>
+  </li>
+      <li>
+    <a href="#">Divide</a>
+  </li>
+      <li>
+    <a href="#">Simplify</a>
+  </li>
+</ol>
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active">
+    <input type="radio" name="options" id="option1" checked> Active
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option2"> Radio
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option3"> Radio
+  </label>
+</div>
+
+{% endblock %}

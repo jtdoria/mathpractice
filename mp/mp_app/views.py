@@ -1,22 +1,27 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .models import Question
+from .models import Subject
 
 
-def index(request):
+def index_view(request):
+    subject_list = Subject.objects.all()
+    context = {'subject_list': subject_list}
+    return render(request, 'mp_app/home.html', context)
+
+
+def arithmetic_view(request):
     context = {}
-    return render(request, 'mp_app/index-cover.html', context)
+    return render(request, 'mp_app/arithmetic.html', context)
 
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+# class HomePageView(ListView):
+#
+#     model = Subject
+#     template_name = 'mp_app/home.html'
+#     subjects = [subj.subject_name for subj in Subject.objects.all()]
+#
+#     def get_context_data(self, **kwargs):
+#         context = {subj.subject_name: subj for subj in Subject.objects.all()}
+#         return context
 
-
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
-
-
-def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)

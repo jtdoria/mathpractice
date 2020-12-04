@@ -1,14 +1,12 @@
-
 {% extends "mp_app/base.html" %}
-
 
 
 {% block content %}
 
 <!-- ---------------------------------------- JUMBOTRON ---------------------------------------- -->
 <div class="jumbotron">
-  <h1 class="display-4">Welcome!</h1>
-  <p class="lead">Practice auto-generated math problems with step-by-step solutions that are easy to understand.</p>
+    <h1 class="display-4">Welcome!</h1>
+    <p class="lead">Practice auto-generated math problems with step-by-step solutions that are easy to understand.</p>
 </div>
 
 
@@ -16,45 +14,75 @@
 
     <!-- Three columns of text below the carousel -->
     <div class="row">
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Arithmetic</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Number Theory</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Algebra</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Arithmetic</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="{% url 'arithmetic' %}" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Number Theory</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Algebra</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
     <!-- Three columns of text below the carousel -->
     <div class="row">
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Calculus</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Linear Algebra</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4 border">
-        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-        <h2>Statistics</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-        <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
-      </div><!-- /.col-lg-4 border -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Calculus</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Linear Algebra</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 border">
+            <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg"
+                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#777"/>
+                <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
+            </svg>
+            <h2>Statistics</h2>
+            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            <p><a class="btn btn-primary" href="#" role="button">Go &raquo;</a></p>
+        </div><!-- /.col-lg-4 border -->
     </div><!-- /.row -->
 </div>
 

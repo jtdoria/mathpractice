@@ -1,80 +1,144 @@
-
 {% extends "mp_app/base.html" %}
-
 
 
 {% block content %}
 
 <!-- ---------------------------------------- JUMBOTRON ---------------------------------------- -->
 <div class="jumbotron">
-  <h1 class="display-4">Welcome to arithmetic!</h1>
-  <p class="lead">Practice auto-generated math problems with step-by-step solutions that are easy to understand.</p>
+    <h1 class="display-4">Welcome to arithmetic!</h1>
+    <p class="lead">Practice auto-generated math problems with step-by-step solutions that are easy to understand.</p>
 </div>
 
-<h3>Integers</h3>
-<ol>
-  <li>
-    <a href="#">Add</a>
-  </li>
-    <li>
-    <a href="#">Subtract</a>
-  </li>
-    <li>
-    <a href="#">Multiply</a>
-  </li>
-    <li>
-    <a href="#">Divide</a>
-  </li>
-</ol>
+<!-- ----------------------------------- Integers ----------------------------------- -->
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col">
 
-<h3>Order of Operations</h3>
-<ol>
-  <li>
-    <a href="#">Basic Operations</a>
-  </li>
-    <li>
-    <a href="#">Include Exponents</a>
-  </li>
-    <li>
-    <a href="#">Include Parentheses</a>
-  </li>
-</ol>
+            <h3>Integers</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Subtopic</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Add</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Subtract</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Multiply</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Divide</td>
+                </tr>
+                </tbody>
+            </table>
 
-<h3>Fractions</h3>
-<ol>
-  <li>
-    <a href="#">Add with common denominators</a>
-  </li>
-    <li>
-    <a href="#">Subtract with common denominators</a>
-  </li>
-    <li>
-    <a href="#">Add with uncommon denominators</a>
-  </li>
-    <li>
-    <a href="#">Subtract with uncommon denominators</a>
-  </li>
-    <li>
-    <a href="#">Multiply</a>
-  </li>
-      <li>
-    <a href="#">Divide</a>
-  </li>
-      <li>
-    <a href="#">Simplify</a>
-  </li>
-</ol>
+        </div>
+        <div class="col-8 border">
+            <h3 style="text-align: center;">placeholder</h3>
+        </div>
+    </div>
+</div>
 
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-  <label class="btn btn-secondary active">
-    <input type="radio" name="options" id="option1" checked> Active
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option2"> Radio
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option3"> Radio
-  </label>
+<p></p>
+
+<!-- ----------------------------------- Order of Operations ----------------------------------- -->
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col">
+
+            <h3>Order of Operations</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Subtopic</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Basic Operations</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Include Exponents</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Include Parentheses</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-8 border">
+            <h3 style="text-align: center;">placeholder</h3>
+        </div>
+    </div>
+</div>
+
+<p></p>
+
+<!-- ----------------------------------- Fractions ----------------------------------- -->
+<div class="container container-fluid">
+    <div class="row">
+        <div class="col">
+
+            <h3>Fractions</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Subtopic</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Add with common denominators</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Subtract with common denominators</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Add with uncommon denominators</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Subtract with uncommon denominators</td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>Multiply</td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>Divide</td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>Simplify</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-8 border">
+            <h3 style="text-align: center;">placeholder</h3>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

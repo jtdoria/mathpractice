@@ -10,7 +10,12 @@ logger = logging.getLogger('my_logger')
 
 
 class Node:
+    _id = 0
+
     def __init__(self, cargo=None):
+        self._id = Node._id
+        Node._id += 1
+
         self.cargo = cargo
         self.parent = None
         self.children = []

@@ -23,6 +23,15 @@ class Integer:
     def __str__(self):
         return str(self.value)
 
+    def __mul__(self, other):
+        if isinstance(other, int):
+            product = Integer(self.value * other)
+        elif isinstance(other, Integer):
+            product = Integer(self.value * other.value)
+        else:
+            raise TypeError
+        return product
+
     def get_value(self):
         return self.value
 

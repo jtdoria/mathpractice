@@ -83,9 +83,37 @@ def determine_next_step(lf_nds):
 
 
 def evaluate_step(node):
+    """
+    Function to extract the operation and operands from next step subtree and call the appropriate execute function on
+    them.
+
+    Arguments
+        node: node object which is the subtree root node containing an operation.
+    Return
+        step_result: whatever the result is of the operation.execute function.
+    """
+    # get the operation
     operation = node.get_cargo()
-    operands = tuple(child.get_cargo() for child in node.get_children())
+
+    # get the nodes of the operands
+    operands_nodes = node.get_children()
+
+    # check if there are any subtractions in the operands nodes
+    # if yes, then replace each node containing subtraction with it's child node
+    for i in range(len(operands_nodes)):
+        if isinstance(operands_nodes[i].get_cargo(), defn.Subtract):
+            operands_nodes[i] = operands_nodes[i].get_child()
+            reverse_sign_cargo = operands_nodes[i].get_cargo() * -1
+            operands_nodes[i].set_cargo(reverse_sign_cargo)
+
+    # list extracted operands
+    operands = [operand.get_cargo() for operand in operands_nodes]
+    logger.debug(f"operation: {operation}; operands: {operands}")
+
+    # execute the operation on the operands and return the result
     step_result = operation.execute(operands)
+    logger.debug(f"step_result: {step_result}")
+
     return step_result
 
 

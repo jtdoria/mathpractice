@@ -4,7 +4,7 @@ import random
 """------------------ ARITHMETIC ------------------"""
 
 
-def gen_arithmetic(operation, diff):
+def gen_basic_arithmetic(diff):
     """Function to generate expressions with the arithmetic operations of addition, subtraction, multiplication, and
     division.
 
@@ -13,10 +13,12 @@ def gen_arithmetic(operation, diff):
     Return
         expr string: expression string with latex formatting
     """
+    operations = ('+', '-', '*', '/')
     upper_bound = 10 ** (diff + 1)
-    op1 = random.randint(0, upper_bound)
-    op2 = random.randint(0, upper_bound)
-    expr = f"{op1} {operation} {op2}"
+    lower_bound = upper_bound * -1
+    operands = [random.randint(lower_bound, upper_bound) for _ in range(2)]
+    operation = random.choice(operations)
+    expr = f"{operands[0]} {operation} {operands[1]}"
     return expr
 
 

@@ -114,49 +114,42 @@ def evaluate_step(node):
     step_result = operation.execute(operands)
     logger.debug(f"step_result: {step_result}")
 
-    return step_result
+    # update the tree
+    node.set_cargo(step_result)
+    node.clear_all_children()
+
+    # return the expression's root node in preparation for recursion
+    while node.get_parent():
+        node = node.get_parent()
+
+    updated_tree_root_node = node
+
+    return updated_tree_root_node
 
 
-def evaluate_expression(root_node):
+def evaluate(expr):
     """
-    Function to manage the evaluation of the entire expression tree.
+    Function to manage the evaluation of an entire expression.
 
-    :param root_node: root node of expression tree (or subtree as function recurses)
-    :return:
+    Arguments
+        expr: an expression string in latex form.
+    Returns
+        root_node: the root (lone) node of the solved expression; should have no children and no parents.
     """
-    logger.debug(f"evaluate_expression START ========================================")
-    # recursive function's terminating condition; include pointer here for "4 * x" scenario, for example
-    if root_node.get_children():
+    # 1. build_tree
+    root_node = main.build_tree(expr)
 
-        # Step 0: Raw expression string (happens outside this function)
-        # Step 1: Build tree (happens outside this function)
+    # check if done
+    while root_node.get_children():
 
-        # Step 2: Collect leaf nodes
+        # 2. collect_leaf_nodes
         leaf_nodes = collect_leaf_nodes(root_node)
 
-        # Step 3 & 4: Determine next step
-        step_node = determine_next_step(leaf_nodes)
-        logger.debug(f"The next step is '{step_node}' with children '{step_node.get_children()}'")
+        # 3. determine_next_step
+        next_step = determine_next_step(leaf_nodes)
 
-        # Step 5: Evaluate the step
-        step_result = evaluate_step(step_node)
-        logger.debug(f"evaluate_next_step returns {step_result}")
-
-        # Step 6: Update the tree
-        focus_node = step_node
-        logger.debug(f"focus_node is {focus_node}")
-        focus_node.set_cargo(step_result)
-        focus_node.clear_all_children()
-        logger.debug(f"focus_node is now {focus_node} with children {focus_node.get_children()}")
-
-        logger.debug(f"root_node is {root_node} with children {root_node.get_children()}")
-        logger.debug(f"evaluate_expression END ==========================================")
-
-        # Recurse
-        evaluate_expression(root_node)
-
-    else:
-        return root_node
+        # 4. evaluate_step
+        root_node = evaluate_step(next_step)
 
     return root_node
 

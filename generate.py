@@ -1,8 +1,10 @@
 """Functions which generate expressions. Design decisions based on Wolfram Alpha's Problem Generator"""
 import random
 
+"""------------------ ARITHMETIC ------------------"""
 
-def gen_arithmetic(operation, diff):
+
+def gen_basic_arithmetic(diff):
     """Function to generate expressions with the arithmetic operations of addition, subtraction, multiplication, and
     division.
 
@@ -11,10 +13,12 @@ def gen_arithmetic(operation, diff):
     Return
         expr string: expression string with latex formatting
     """
+    operations = ('+', '-', '*', '/')
     upper_bound = 10 ** (diff + 1)
-    op1 = random.randint(0, upper_bound)
-    op2 = random.randint(0, upper_bound)
-    expr = f"{op1} {operation} {op2}"
+    lower_bound = upper_bound * -1
+    operands = [random.randint(lower_bound, upper_bound) for _ in range(2)]
+    operation = random.choice(operations)
+    expr = f"{operands[0]} {operation} {operands[1]}"
     return expr
 
 
@@ -110,9 +114,6 @@ def gen_arithmetic_order_of_operations_include_parentheses(diff):
     return expression_string
 
 
-"""ARITHMETIC - FRACTIONS"""
-
-
 def gen_arithmetic_fractions_add_with_common_denominators(diff):
     """ARITHMETIC - FRACTIONS - ADD WITH COMMON DENOMINATORS"""
     operation = "+"
@@ -198,7 +199,7 @@ def gen_arithmetic_fractions_simplify(diff):
     return expr
 
 
-"""NUMBER THEORY"""
+"""------------------ NUMBER THEORY ------------------"""
 
 
 def number_theory_integers_divisibility_test(diff):
@@ -282,3 +283,775 @@ def number_theory_integers_relatively_prime_test(diff):
     b = random.randint(1, upper_bound)
     word_expr = f"Is 1 the only positive number that divides both {a} and {b}?"
     return word_expr
+
+
+"""------------------ ALGEBRA ------------------"""
+
+
+def algebra_radicals_add(diff):
+    """ALGEBRA - RADICALS - ADD"""
+
+    upper_bound = 10 ** (diff + 1)
+
+    coefficient_1 = random.randint(1, upper_bound)
+    index_1 = random.randint(2, 4)
+    radicand_1 = random.randint(1, upper_bound)
+
+    coefficient_2 = random.randint(1, upper_bound)
+    index_2 = random.randint(2, 4)
+    radicand_2 = random.randint(1, upper_bound)
+
+    expr = f"{coefficient_1}\\sqrt[{index_1}]{{{radicand_1}}} + {coefficient_2}\\sqrt[{index_2}]{{{radicand_2}}}"
+
+    return expr
+
+
+def algebra_radicals_subtract(diff):
+    """ALGEBRA - RADICALS - SUBTRACT"""
+
+    upper_bound = 10 ** (diff + 1)
+
+    coefficient_1 = random.randint(1, upper_bound)
+    index_1 = random.randint(2, 4)
+    radicand_1 = random.randint(1, upper_bound)
+
+    coefficient_2 = random.randint(1, upper_bound)
+    index_2 = random.randint(2, 4)
+    radicand_2 = random.randint(1, upper_bound)
+
+    expr = f"{coefficient_1}\\sqrt[{index_1}]{{{radicand_1}}} - {coefficient_2}\\sqrt[{index_2}]{{{radicand_2}}}"
+
+    return expr
+
+
+def algebra_radicals_multiply(diff):
+    """ALGEBRA - RADICALS - MULTIPLY"""
+
+    upper_bound = 10 ** (diff + 1)
+
+    coefficient_1 = random.randint(1, upper_bound)
+    index_1 = random.randint(2, 4)
+    radicand_1 = random.randint(1, upper_bound)
+
+    coefficient_2 = random.randint(1, upper_bound)
+    index_2 = random.randint(2, 4)
+    radicand_2 = random.randint(1, upper_bound)
+
+    expr = f"{coefficient_1}\\sqrt[{index_1}]{{{radicand_1}}} * {coefficient_2}\\sqrt[{index_2}]{{{radicand_2}}}"
+
+    return expr
+
+
+def algebra_radicals_distribute(diff):
+    """ALGEBRA - RADICALS - DISTRIBUTE"""
+
+    upper_bound = 10 ** (diff + 1)
+
+    coefficient_1 = random.randint(1, upper_bound)
+    index_1 = random.randint(2, 4)
+    radicand_1 = random.randint(1, upper_bound)
+
+    coefficient_2 = random.randint(1, upper_bound)
+    index_2 = random.randint(2, 4)
+    radicand_2 = random.randint(1, upper_bound)
+
+    coefficient_3 = random.randint(1, upper_bound)
+    index_3 = random.randint(2, 4)
+    radicand_3 = random.randint(1, upper_bound)
+
+    expr = f"{coefficient_3}\\sqrt[{index_3}]{{{radicand_3}}} * " \
+           f"( {coefficient_1}\\sqrt[{index_1}]{{{radicand_1}}} + {coefficient_2}\\sqrt[{index_2}]{{{radicand_2}}} )"
+
+    return expr
+
+
+def algebra_radicals_rationalize(diff):
+    """ALGEBRA - RADICALS - RATIONALIZE"""
+    upper_bound = 10 ** (diff + 1)
+    sign = random.choice(["", "-"])
+    numer = random.randint(0, upper_bound)
+
+    coefficient = random.randint(1, upper_bound)
+    index = random.randint(2, 4)
+    radicand = random.randint(1, upper_bound)
+    denom = f"{coefficient}\\sqrt[{index}]{{{radicand}}}"
+
+    expr = f"{sign} \\frac{{{numer}}}{{{denom}}}"
+
+    return expr
+
+
+def algebra_radicals_simplify(diff):
+    """ALGEBRA - RADICALS - SIMPLIFY"""
+
+    if diff == 0:
+        """Beginner: radical with max 3 digit radicand"""
+        radicand = random.randint(1, 1000)
+        expr = f"\\sqrt[]{{{radicand}}}"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but radicand is a quotient"""
+        numer = random.randint(1, 1000)
+        denom = random.randint(1, 1000)
+        radicand = f"\\frac{{{numer}}}{{{denom}}}"
+        expr = f"\\sqrt[]{{{radicand}}}"
+
+    else:
+        """Advanced: same as intermediate, but with max 4 digit numbers"""
+        numer = random.randint(1, 10000)
+        denom = random.randint(1, 10000)
+        radicand = f"\\frac{{{numer}}}{{{denom}}}"
+        expr = f"\\sqrt[]{{{radicand}}}"
+
+    return expr
+
+
+def algebra_complex_numbers_add(diff):
+    """ALGEBRA - COMPLEX NUMBERS - ADD"""
+
+    if diff == 0:
+        """Beginner: (a + bi) + (c + di)"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        expr = f"({coefficients[0]} + {coefficients[1]}i) + ({coefficients[2]} + {coefficients[3]}i)"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but any two numbers will be quotients"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) + ({coefficients[2]} + {coefficients[3]}i)"
+
+    else:
+        """Advanced: same as intermediate, but numbers will be max 3 digits long"""
+        coefficients = [random.randint(1, 100) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) + ({coefficients[2]} + {coefficients[3]}i)"
+
+    return expr
+
+
+def algebra_complex_numbers_subtract(diff):
+    """ALGEBRA - COMPLEX NUMBERS - SUBTRACT"""
+
+    if diff == 0:
+        """Beginner: (a + bi) - (c + di)"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        expr = f"({coefficients[0]} + {coefficients[1]}i) - ({coefficients[2]} + {coefficients[3]}i)"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but any two numbers will be quotients"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) - ({coefficients[2]} + {coefficients[3]}i)"
+
+    else:
+        """Advanced: same as intermediate, but numbers will be max 3 digits long"""
+        coefficients = [random.randint(1, 100) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) - ({coefficients[2]} + {coefficients[3]}i)"
+
+    return expr
+
+
+def algebra_complex_numbers_multiply(diff):
+    """ALGEBRA - COMPLEX NUMBERS - MULTIPLY"""
+
+    if diff == 0:
+        """Beginner: (a + bi) * (c + di)"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        expr = f"({coefficients[0]} + {coefficients[1]}i) * ({coefficients[2]} + {coefficients[3]}i)"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but any two numbers will be quotients"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) * ({coefficients[2]} + {coefficients[3]}i)"
+
+    else:
+        """Advanced: same as intermediate, but numbers will be max 3 digits long"""
+        coefficients = [random.randint(1, 100) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) * ({coefficients[2]} + {coefficients[3]}i)"
+
+    return expr
+
+
+def algebra_complex_numbers_divide(diff):
+    """ALGEBRA - COMPLEX NUMBERS - DIVIDE"""
+
+    if diff == 0:
+        """Beginner: (a + bi) / (c + di)"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        expr = f"({coefficients[0]} + {coefficients[1]}i) / ({coefficients[2]} + {coefficients[3]}i)"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but any two numbers will be quotients"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) / ({coefficients[2]} + {coefficients[3]}i)"
+
+    else:
+        """Advanced: same as intermediate, but numbers will be max 3 digits long"""
+        coefficients = [random.randint(1, 100) for _ in range(4)]
+        targets = random.sample(range(4), 2)
+
+        for target in targets:
+            coefficients[target] = f"\\frac{{{coefficients[target]}}}{{{random.randint(1, 10)}}}"
+        expr = f"({coefficients[0]} + {coefficients[1]}i) / ({coefficients[2]} + {coefficients[3]}i)"
+
+    return expr
+
+
+def algebra_complex_numbers_find_the_norm(diff):
+    """ALGEBRA - COMPLEX NUMBERS - FIND THE NORM"""
+
+    if diff == 0:
+        """Beginner: Find the norm of a + bi"""
+        coefficients = [random.randint(1, 10) for _ in range(2)]
+        expr = f"Find the norm of {coefficients[0]} + {coefficients[1]}i"
+
+    elif diff == 1:
+        """Intermediate: same as beginner, but a is a quotient"""
+        coefficients = [f"\\frac{{{random.randint(1, 10)}}}{{{random.randint(1, 10)}}}", random.randint(1, 10)]
+        expr = f"Find the norm of {coefficients[0]} + {coefficients[1]}i"
+
+    else:
+        """Advanced: same as beginner, but b is a radical"""
+        coefficients = [random.randint(1, 10) for _ in range(2)]
+        expr = f"Find the norm of {coefficients[0]} + \\sqrt[]{{{coefficients[1]}}} * i"
+
+    return expr
+
+
+def algebra_polynomials_evaluate_at_a_point(diff):
+    """ALGEBRA - POLYNOMIALS - EVALUATE AT A POINT"""
+
+    if diff == 0:
+        """Beginner: x^2"""
+        coefficients = [random.randint(1, 10) for _ in range(2)]
+        constant = random.randint(1, 10)
+        point = random.randint(0, 10)
+        expr = f"Evaluate\\ {coefficients[0]}x^{2} + {coefficients[1]}x + {constant}\\ at\\ x = {point}"
+
+    elif diff == 1:
+        """Intermediate: x^3"""
+        coefficients = [random.randint(1, 10) for _ in range(3)]
+        constant = random.randint(1, 10)
+        point = random.randint(0, 10)
+        expr = f"Evaluate\\ {coefficients[0]}x^{3} + {coefficients[1]}x^{2} + {coefficients[2]}x + {constant}\\ at\\ " \
+               f"x = {point} "
+
+    else:
+        """Advanced: x^4"""
+        coefficients = [random.randint(1, 10) for _ in range(4)]
+        constant = random.randint(1, 10)
+        point = random.randint(0, 10)
+        expr = f"Evaluate\\ {coefficients[0]}x^{4} + {coefficients[1]}x^{3} + {coefficients[2]}x^{2} + " \
+               f"{coefficients[3]}x + {constant}\\ at\\ x = {point} "
+
+    return expr
+
+
+def algebra_polynomials_add(diff):
+    """ALGEBRA - POLYNOMIALS - ADD"""
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_subtract(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_expand(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_factor(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_multiply_monomial_and_polynomial(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_multiply_two_polynomials(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_binomial_expansion(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_polynomials_horizontal_axis_intercepts(diff):
+    """ALGEBRA - POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_quadratic_polynomials_expand(diff):
+    """ALGEBRA - QUADRATIC POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_quadratic_polynomials_factor(diff):
+    """ALGEBRA - QUADRATIC POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_quadratic_polynomials_complete_the_square(diff):
+    """ALGEBRA - QUADRATIC POLYNOMIALS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_integers_one_step_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_integers_two_step_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_rationals_one_step_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_rationals_two_step_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_multi_step_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_absolute_values_integer_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_absolute_values_rational_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_absolute_values_radical_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_quadratic_equations_completed_squares(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_quadratic_equations_integer_solutions(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_quadratic_equations_difference_of_squares(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_quadratic_equations_complex_number_solutions(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_quadratic_equations_radical_solutions(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_general_factored_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_general_polynomial_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_general_multi_variate_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_exponents_and_logarithms_exponential_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_exponents_and_logarithms_logarithmic_equations(diff):
+    """ALGEBRA - EQUATION SOLVING - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_systems_of_equations_systems_of_two_equations(diff):
+    """ALGEBRA - SYSTEMS OF EQUATIONS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_systems_of_equations_systems_of_three_equations(diff):
+    """ALGEBRA - SYSTEMS OF EQUATIONS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+def algebra_equation_solving_systems_of_equations_systems_of_four_equations(diff):
+    """ALGEBRA - SYSTEMS OF EQUATIONS - """
+
+    if diff == 0:
+        expr = f""
+
+    elif diff == 1:
+        expr = f""
+
+    else:
+        expr = f""
+
+    return expr
+
+
+"""------------------ CALCULUS ------------------"""
+"""------------------ LINEAR ALGEBRA ------------------"""
+"""------------------ STATISTICS ------------------"""

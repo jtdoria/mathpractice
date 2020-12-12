@@ -35,8 +35,8 @@ def build_tree(expr):
 
     # Step 3: Map expression element to mathematical object.
     regex_to_class_dict = {
-        r"^[0-9]+$": defn.Integer,
-        r"^[0-9]+\.[0-9]+$": defn.Decimal,
+        r"^-?[0-9]+$": defn.Integer,
+        r"^-?[0-9]+\.[0-9]+$": defn.Decimal,
         r"^\+$": defn.Add,
         r"^\-$": defn.Subtract,
         r"^\*$": defn.Multiply,

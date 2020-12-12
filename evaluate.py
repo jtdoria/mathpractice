@@ -12,12 +12,11 @@ logging.config.dictConfig(lc.config_dict)
 logger = logging.getLogger('my_logger')
 
 
-def collect_leaf_nodes(node, lf_nds=None, level=0):
+def collect_leaf_nodes(node, lf_nds=None):
     """
     Arguments:
         node: (tree.Node object) to provide starting node from which to begin evaluation.
         lf_nds: (list) to contain the leaf nodes.
-        level: (int) to keep track of tree depth level.
     Returns:
         leaf_nodes: (list of tuples) list containing tuples of all leaf nodes and their respective depth level in the
         form (node, level).
@@ -29,151 +28,129 @@ def collect_leaf_nodes(node, lf_nds=None, level=0):
     if node.get_children():
         num_of_children = len(node.get_children())
         for i in range(num_of_children):
-            # Is node's cargo Subtract?
-            if isinstance(node.get_cargo(), defn.Subtract):
-                collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level)
-            else:
-                collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds, level=level + 1)
+            collect_leaf_nodes(node=node.get_child(i), lf_nds=lf_nds)
             logger.debug(f"leaf_nodes so far: {lf_nds}")
     else:
-        logger.debug(f"appending: '{node, level}'")
-        lf_nds.append((node, level))
+        logger.debug(f"appending: '{node}'")
+        lf_nds.append(node)
     logger.debug(f"collect_leaf_nodes returned: {lf_nds}")
     return lf_nds
-
-
-def get_deepest_leaf_nodes(lf_nds):
-    """
-    Function to return a list of leaf nodes at the deepest level of the tree.
-
-    :param lf_nds: list of tuples containing a leaf node and its level in the form [(<node>, <level>),].
-    :return: list of leaf nodes at the deepest level of the tree.
-
-    :test:
-    a = [(1, 2),(3, 1),(18, 75), (6, 14), (89, 75)]
-    b = get_deepest_leaf_nodes(a)
-    print(b) # should print [(18, 75), (89, 75)]
-    """
-    depth_level = 0
-    deepest_leaf_nodes = []
-
-    for lf in lf_nds:
-        if lf[1] == depth_level:
-            deepest_leaf_nodes.append(lf[0])
-        elif lf[1] > depth_level:
-            depth_level = int(lf[1])
-            deepest_leaf_nodes.clear()
-            deepest_leaf_nodes.append(lf[0])
-
-    return deepest_leaf_nodes
 
 
 def determine_next_step(lf_nds):
     """
     Function to determine the next step to execute from a list of leaf nodes.
 
-    :param lf_nds: list of leaf nodes expected to come from collect_leaf_nodes.
-    :return step_root_node: root node of the next step to be performed
+    Arguments
+        lf_nds: list of leaf nodes expected to come from collect_leaf_nodes
+    Return
+        candidate_node: root node of the subtree representing the next step to be executed
     """
     logger.debug(f"lf_nds = {lf_nds}")
-    dp_lf_nds = get_deepest_leaf_nodes(lf_nds)
-    logger.debug(f"dp_lf_nds = {dp_lf_nds}")
-    still_looking = True
-    step_root_node = None
-    index = 0
-    siblings_found = 0
 
-    while still_looking:
-        current_leaf = dp_lf_nds[index]
-        siblings = current_leaf.get_parent().get_children()
-        logger.debug(f"siblings are: {siblings}")
-        # Assuming each Subtract node has only one child, we'll just use that child for this comparison
-        for i in range(len(siblings)):
-            if isinstance(siblings[i].get_cargo(), defn.Subtract):
-                siblings[i] = siblings[i].get_child()
-                logger.debug(f"sibling changed to: {siblings[i]}")
-        logger.debug(f"index: {index}")
-        logger.debug(f"current_leaf: {current_leaf}")
-        logger.debug(f"siblings: {siblings}")
-        for sibling in siblings:
-            for lf in dp_lf_nds:
-                if id(sibling) == id(lf):
-                    siblings_found += 1
-                    logger.debug(f"sibling found, siblings_found = {siblings_found}")
-                    if siblings_found == len(siblings):
-                        step_root_node = siblings[0].get_parent()
-                        still_looking = False
-        index += 1
-    logger.debug(f"step_root_node: {step_root_node} with children: {step_root_node.get_children()}")
-    return step_root_node
+    order_priority = {
+        '*': 0,
+        '/': 0,
+        '+': 1,
+        '-': 1,
+    }
+
+    candidate_node = None
+
+    while lf_nds:
+
+        current_leaf = lf_nds[0]
+        current_parent = current_leaf.get_parent()
+        current_siblings = current_parent.get_children()
+
+        # check if there are any subtractions in current_siblings
+        # if yes, then replace each subtraction with it's child
+        for i in range(len(current_siblings)):
+            if isinstance(current_siblings[i].get_cargo(), defn.Subtract):
+                current_siblings[i] = current_siblings[i].get_child()
+
+        if (set(current_siblings) & set(lf_nds)) == set(current_siblings):
+            if candidate_node:
+                if order_priority[str(current_parent.get_cargo())] < order_priority[str(candidate_node.get_cargo())]:
+                    candidate_node = current_parent
+            else:
+                candidate_node = current_parent
+
+        for sibling in (set(current_siblings) & set(lf_nds)):
+            lf_nds.remove(sibling)
+
+    logger.debug(f"returning candidate_node: {candidate_node} with children: {candidate_node.get_children()}")
+    return candidate_node
 
 
 def evaluate_step(node):
+    """
+    Function to extract the operation and operands from next step subtree and call the appropriate execute function on
+    them.
+
+    Arguments
+        node: node object which is the subtree root node containing an operation.
+    Return
+        step_result: whatever the result is of the operation.execute function.
+    """
+    # get the operation
     operation = node.get_cargo()
-    logger.debug(f"operation: {operation}")
-    operands = []
 
-    for i in range(len(node.get_children())):
+    # get the nodes of the operands
+    operands_nodes = node.get_children()
 
-        # If the child of operation is not Subtract, append the operand to the operands list
-        if not isinstance(node.get_children()[i].get_cargo(), defn.Subtract):
-            operands.append(node.get_children()[i].get_cargo())
+    # check if there are any subtractions in the operands nodes
+    # if yes, then replace each node containing subtraction with it's child node
+    for i in range(len(operands_nodes)):
+        if isinstance(operands_nodes[i].get_cargo(), defn.Subtract):
+            operands_nodes[i] = operands_nodes[i].get_child()
+            reverse_sign_cargo = operands_nodes[i].get_cargo() * -1
+            operands_nodes[i].set_cargo(reverse_sign_cargo)
 
-        # If the child of operation is Subtract, multiply its child's cargo value by -1 and append that to the operands
-        # list
-        if isinstance(node.get_children()[i].get_cargo(), defn.Subtract):
-            correct_operand = node.get_children()[i].get_child().get_cargo()
-            correct_operand = defn.Integer(correct_operand.get_value() * -1)
-            operands.append(correct_operand)
+    # list extracted operands
+    operands = [operand.get_cargo() for operand in operands_nodes]
+    logger.debug(f"operation: {operation}; operands: {operands}")
 
-    logger.debug(f"operands: {operands} of type {type(operands)} with operands[0] {operands[0]} of type {type(operands[0])}")
-
-    operands = tuple(operands)
+    # execute the operation on the operands and return the result
     step_result = operation.execute(operands)
-    logger.debug(f"step_result: {step_result} of type {type(step_result)}")
-    return step_result
+    logger.debug(f"step_result: {step_result}")
+
+    # update the tree
+    node.set_cargo(step_result)
+    node.clear_all_children()
+
+    # return the expression's root node in preparation for recursion
+    while node.get_parent():
+        node = node.get_parent()
+
+    updated_tree_root_node = node
+
+    return updated_tree_root_node
 
 
-def evaluate_expression(root_node):
+def evaluate(expr):
     """
-    Function to manage the evaluation of the entire expression tree.
+    Function to manage the evaluation of an entire expression.
 
-    :param root_node: root node of expression tree (or subtree as function recurses)
-    :return:
+    Arguments
+        expr: an expression string in latex form.
+    Returns
+        root_node: the root (lone) node of the solved expression; should have no children and no parents.
     """
-    logger.debug(f"evaluate_expression START ========================================")
-    # recursive function's terminating condition; include pointer here for "4 * x" scenario, for example
-    if root_node.get_children():
+    # 1. build_tree
+    root_node = main.build_tree(expr)
 
-        # Step 0: Raw expression string (happens outside this function)
-        # Step 1: Build tree (happens outside this function)
+    # check if done
+    while root_node.get_children():
 
-        # Step 2: Collect leaf nodes
+        # 2. collect_leaf_nodes
         leaf_nodes = collect_leaf_nodes(root_node)
 
-        # Step 3 & 4: Determine next step
-        step_node = determine_next_step(leaf_nodes)
-        logger.debug(f"The next step is '{step_node}' with children '{step_node.get_children()}'")
+        # 3. determine_next_step
+        next_step = determine_next_step(leaf_nodes)
 
-        # Step 5: Evaluate the step
-        step_result = evaluate_step(step_node)
-        logger.debug(f"evaluate_next_step returns {step_result}")
-
-        # Step 6: Update the tree
-        focus_node = step_node
-        logger.debug(f"focus_node is {focus_node}")
-        focus_node.set_cargo(step_result)
-        focus_node.clear_all_children()
-        logger.debug(f"focus_node is now {focus_node} with children {focus_node.get_children()}")
-
-        logger.debug(f"root_node is {root_node} with children {root_node.get_children()}")
-        logger.debug(f"evaluate_expression END ==========================================")
-
-        # Recurse
-        evaluate_expression(root_node)
-
-    else:
-        return root_node
+        # 4. evaluate_step
+        root_node = evaluate_step(next_step)
 
     return root_node
 

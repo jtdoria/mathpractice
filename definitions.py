@@ -69,6 +69,10 @@ class Decimal:
     def __str__(self):
         return str(self.value)
 
+    def __mul__(self, other):
+        product = Decimal(self.value * other)
+        return product
+
     def get_value(self):
         return self.value
 
